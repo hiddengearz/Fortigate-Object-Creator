@@ -10,7 +10,7 @@ def main():
     file = ("systems.xlsx") #default file name
     wb = xlrd.open_workbook(file) #open the excel file
 
-
+    print("config firewall address")
     for x, sheet_name in enumerate(wb.sheet_names()): #for each sheet in the workbook
         print(f'######################################################################{sheet_name}######################################################################')
         sheet = wb.sheet_by_index(x)
@@ -20,26 +20,12 @@ def main():
             with open(config_file) as f: #Open the file
                 content = f.read()
                 for i in range(sheet.nrows): #For each row in the file
-                    name = "Srv_" + sheet.cell_value(i, 0)
+                    name = sheet.cell_value(i, 0)
                     if sheet.cell_value(i, 0) != "": #If the cell isn't empty
                         if sheet.cell_value(i, 0) not in content: #if the string in the cell isn't in the config file
-                            print("config firewall address")
-                            print(f"edit \"{name}\"")
-                            print(f'set associated-interface "Trust"')
-                            try: #Column B has to be FQDN, if there is a FQDN use that
-                                if(sheet.cell_value(i, 1)) != "":
-                                    print(f'set type fqdn')
-                                    print(f'set fqdn "{sheet.cell_value(i, 1)}"')
-                            except: #Otherwise coulmn C needs to have an IP, use the IP instead
-                                if (sheet.cell_value(i, 2)) != "":
-                                    print(f'set subnet {sheet.cell_value(i, 2)} 255.255.255.255')
-                            print('end')
 
-                            #Add the server to the object group
-                            print("config firewall addrgrp")
-                            print(f'edit "Blocked 2008 Servers"')
-                            print(f'append member "{name}"')
-                            print(f'end')
+                            print(f"delete \"{name}\"")
+
 
                         else: #If the cells value is in the config you need to add it to the group manually
                             notAdded.append(sheet.cell_value(i, 0))
