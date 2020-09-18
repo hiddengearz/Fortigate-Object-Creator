@@ -7,10 +7,13 @@ import xlrd
 def main():
     startTime = time.time() #Begin recording how long it takes to execute this script
     help = False;
+    file = ""
 
     for i, arg in enumerate(sys.argv):
         if '-h' in arg or '-help' in arg:
             help = True;
+        elif '-f' in arg or '-file' in arg:
+            file = str(sys.argv[i+1])
 
     if help:
         print('Fortigate object creator!')
@@ -28,9 +31,10 @@ def main():
             '2) The latest copy of you\'re firewall configuration. The script will compare new objects to old once to avoid creating duplicates.'
             'Please note the firewall config name must be the same as the worksheet in excel.'
             'Please see example.xlsx and the example .conf files')
+        print('-f [file], -file [file] the location of the file containing a list of the systems')
 
     else:
-        file = ("systems.xlsx") #default file name
+        file = (file) #default file name
         wb = xlrd.open_workbook(file) #open the excel file
 
 
@@ -62,7 +66,7 @@ def main():
 
                                 #Add the server to the object group
                                 print("config firewall addrgrp")
-                                print(f'edit "Blocked 2003/XP Servers"')
+                                print(f'edit "Xerox Printers"')
                                 print(f'append member "{name}"')
                                 print(f'end')
 
